@@ -1,6 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:money_tracker/pages/login_page.dart';
+import 'package:money_tracker/ui/on_boarding.dart';
+import 'package:money_tracker/ui/splash_screen.dart';
+import 'package:money_tracker/utils/routes.dart';
+import 'package:money_tracker/utils/themes.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -12,9 +20,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-      ),
-      home: const MaterialApp(title: 'Flutter Demo Home Page'),
+      theme: ThemeData(),
+      debugShowCheckedModeBanner: false,
+      home: const SplashScreen(),
+      routes: {
+        MyRoutes.loginRoute: (context) => const Login(),
+        MyRoutes.onBoardingRoute: (context) => const OnBoarding(),
+      },
     );
   }
 }
