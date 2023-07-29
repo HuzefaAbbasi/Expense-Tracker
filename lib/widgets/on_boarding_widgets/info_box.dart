@@ -1,7 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import '../../utils/routes.dart';
 import '../../utils/themes.dart';
+import '../main_button.dart';
 
 class InfoBox extends StatelessWidget {
   final double screenHeight;
@@ -26,8 +29,13 @@ class InfoBox extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          GetStartedButton(
-              screenHeight: screenHeight, screenWidth: screenWidth),
+          MainButton(
+            screenHeight: screenHeight,
+            screenWidth: screenWidth,
+            title: 'Get Started',
+            onTapFunction: () =>
+                Navigator.pushNamed(context, MyRoutes.signupRoute),
+          ),
           const SizedBox(
             height: 20,
           ),
@@ -48,47 +56,6 @@ class OnBoardingTitle extends StatelessWidget {
       style: TextStyle(color: MyThemes.greenColor, fontWeight: FontWeight.bold),
       textAlign: TextAlign.center,
       textScaleFactor: 2,
-    );
-  }
-}
-
-class GetStartedButton extends StatelessWidget {
-  final double screenHeight;
-  final double screenWidth;
-
-  const GetStartedButton({
-    Key? key,
-    required this.screenHeight,
-    required this.screenWidth,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      child: Container(
-        height: screenHeight * 0.08,
-        width: screenWidth * 0.9,
-        decoration: BoxDecoration(
-            gradient: const LinearGradient(
-                colors: [MyThemes.lightGreenColor, MyThemes.greenColor],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter),
-            boxShadow: [
-              BoxShadow(
-                  color: MyThemes.greenColorShadow.withOpacity(0.5),
-                  blurRadius: 10,
-                  spreadRadius: 2,
-                  offset: const Offset(2, 15))
-            ],
-            borderRadius: const BorderRadius.all(Radius.circular(40))),
-        child: const Center(
-          child: Text(
-            "Get Started",
-            textScaleFactor: 1.3,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-          ),
-        ),
-      ).animate().slideY().then().shake(),
     );
   }
 }

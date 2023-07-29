@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:money_tracker/pages/login_page.dart';
+import 'package:money_tracker/pages/signup_page.dart';
 import 'package:money_tracker/ui/on_boarding.dart';
 import 'package:money_tracker/ui/splash_screen.dart';
 import 'package:money_tracker/utils/routes.dart';
@@ -20,12 +21,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(),
+      theme: ThemeData().copyWith(
+        colorScheme: ThemeData().colorScheme.copyWith(
+              primary: MyThemes.greenColor,
+            ),
+      ),
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
       routes: {
         MyRoutes.loginRoute: (context) => const Login(),
         MyRoutes.onBoardingRoute: (context) => const OnBoarding(),
+        MyRoutes.signupRoute: (context) => const Signup(),
       },
     );
   }
