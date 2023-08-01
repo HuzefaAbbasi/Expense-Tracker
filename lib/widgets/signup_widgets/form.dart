@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../../utils/themes.dart';
 
-bool isVisible1 = false;
-bool isVisible2 = false;
-
 class SignupForm extends StatefulWidget {
   const SignupForm({
     Key? key,
@@ -17,6 +14,8 @@ class SignupForm extends StatefulWidget {
 }
 
 class _SignupFormState extends State<SignupForm> {
+  bool isVisible1 = false;
+  bool isVisible2 = false;
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;

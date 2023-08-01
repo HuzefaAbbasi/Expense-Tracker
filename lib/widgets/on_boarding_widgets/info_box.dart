@@ -1,7 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-
 import '../../utils/routes.dart';
 import '../../utils/themes.dart';
 import '../main_button.dart';
@@ -39,7 +37,10 @@ class InfoBox extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          const AlreadyAccountRow(),
+          const AlreadyAccountRow(
+            mainText: "Already have Account?",
+            clickAbleText: "  Log in",
+          ),
         ],
       ),
     );
@@ -61,23 +62,29 @@ class OnBoardingTitle extends StatelessWidget {
 }
 
 class AlreadyAccountRow extends StatelessWidget {
-  const AlreadyAccountRow({super.key});
+  final String mainText;
+  final String clickAbleText;
+  const AlreadyAccountRow({
+    Key? key,
+    required this.mainText,
+    required this.clickAbleText,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Already have Account?",
+          mainText,
           textScaleFactor: 1.1,
-          style: TextStyle(color: MyThemes.textColor),
+          style: const TextStyle(color: MyThemes.textColor),
         ),
         InkWell(
             child: Text(
-          "  Log in",
+          clickAbleText,
           textScaleFactor: 1.1,
-          style: TextStyle(color: MyThemes.greenColor),
+          style: const TextStyle(color: MyThemes.greenColor),
         ))
       ],
     );
