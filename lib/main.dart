@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:money_tracker/pages/home_page.dart';
 import 'package:money_tracker/pages/login_page.dart';
 import 'package:money_tracker/pages/signup_page.dart';
 import 'package:money_tracker/ui/on_boarding.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         MyRoutes.loginRoute: (context) => const Login(),
         MyRoutes.onBoardingRoute: (context) => const OnBoarding(),
         MyRoutes.signupRoute: (context) => const Signup(),
+        MyRoutes.homeRoue: (context) => const HomePage(),
       },
     );
   }

@@ -1,9 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:money_tracker/utils/routes.dart';
 import 'package:money_tracker/widgets/appbar.dart';
 import 'package:money_tracker/widgets/main_button.dart';
 import 'package:money_tracker/widgets/background.dart';
 import 'package:money_tracker/widgets/signup_widgets/form.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -33,16 +35,6 @@ class _SignupState extends State<Signup> {
                   height: screenHeight * 0.2,
                 ),
                 const SignupForm(),
-                SizedBox(
-                  height: screenHeight * 0.05,
-                ),
-                MainButton(
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
-                  title: 'Sign up',
-                  onTapFunction: () =>
-                      Navigator.pushNamed(context, MyRoutes.loginRoute),
-                )
               ],
             ),
           )

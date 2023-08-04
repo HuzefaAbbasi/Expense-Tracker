@@ -1,8 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:money_tracker/utils/toast.dart';
+import '../../utils/routes.dart';
 import '../../utils/themes.dart';
+import '../main_button.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SignupForm extends StatefulWidget {
   const SignupForm({
@@ -16,10 +20,44 @@ class SignupForm extends StatefulWidget {
 class _SignupFormState extends State<SignupForm> {
   bool isVisible1 = false;
   bool isVisible2 = false;
+
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  // For firebase authentication
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // If fields are valid, this function will execute
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    moveToLogin(BuildContext context) async {
+      if (_formKey.currentState!.validate()) {
+        try {
+          await _auth.createUserWithEmailAndPassword(
+              email: _emailController.text.trim(),
+              password: _passwordController.text.trim());
+          //Navigate to Login page
+          // ignore: use_build_context_synchronously
+          Navigator.pushNamed(context, MyRoutes.loginRoute);
+        } on FirebaseAuthException catch (e) {
+          if (e.code == 'email-already-in-use') {
+            MyToast.makeToast(
+                'The email address is already in use by another account.');
+          } else {
+            MyToast.makeToast('An error occurred: ${e.message}');
+          }
+        } catch (e) {
+          MyToast.makeToast('An unexpected error occurred.');
+        }
+        //
+      }
+    }
 
     //Box Decoration
     const boxDecoration = BoxDecoration(
@@ -38,13 +76,20 @@ class _SignupFormState extends State<SignupForm> {
           style: TextStyle(color: MyThemes.textColor),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 8.0),
+          padding: const EdgeInsets.only(top: 12.0),
           child: SizedBox(
             height: screenHeight * 0.06,
             child: TextFormField(
+              controller: _nameController,
               decoration: giveInputDecoration(
                   hint: 'Enter name',
                   icon: const Icon(CupertinoIcons.person_crop_circle)),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter name';
+                }
+                return null;
+              },
             ),
           ),
         )
@@ -59,13 +104,20 @@ class _SignupFormState extends State<SignupForm> {
           style: TextStyle(color: MyThemes.textColor),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 8.0),
+          padding: const EdgeInsets.only(top: 12.0),
           child: SizedBox(
             height: screenHeight * 0.06,
             child: TextFormField(
+              controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: giveInputDecoration(
                   hint: 'Enter email', icon: const Icon(CupertinoIcons.at)),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter email';
+                }
+                return null;
+              },
             ),
           ),
         )
@@ -80,15 +132,25 @@ class _SignupFormState extends State<SignupForm> {
           style: TextStyle(color: MyThemes.textColor),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 8.0),
+          padding: const EdgeInsets.only(top: 12.0),
           child: SizedBox(
             height: screenHeight * 0.06,
             child: TextFormField(
+              controller: _passwordController,
               obscureText: !isVisible1,
               decoration: giveInputDecorationPassword1(
                 hint: 'Enter password',
                 icon: const Icon(Icons.lock_outline),
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter password';
+                }
+                if (value.length < 9) {
+                  return 'Password should be atleast 8 characters long';
+                }
+                return null;
+              },
             ),
           ),
         )
@@ -103,47 +165,75 @@ class _SignupFormState extends State<SignupForm> {
           style: TextStyle(color: MyThemes.textColor),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 8.0),
+          padding: const EdgeInsets.only(top: 12.0),
           child: SizedBox(
             height: screenHeight * 0.06,
             child: TextFormField(
+              controller: _confirmPasswordController,
               obscureText: !isVisible2,
               decoration: giveInputDecorationPassword2(
                 hint: 'Enter password again',
                 icon: const Icon(Icons.lock_outline),
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter password';
+                }
+                if (value != _passwordController.text.trim()) {
+                  return "Password don't match";
+                }
+                return null;
+              },
             ),
           ),
         )
       ],
     );
 
-    return Container(
-      height: screenHeight * 0.5,
-      width: screenWidth,
-      margin: EdgeInsets.all(screenWidth * 0.07),
-      padding: EdgeInsets.all(screenWidth * 0.05),
-      decoration: boxDecoration,
+    return Form(
+      key: _formKey,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          //Name Field
-          nameField,
-          const SizedBox(
-            height: 15,
+          Container(
+            height: screenHeight * 0.5,
+            width: screenWidth,
+            margin: EdgeInsets.all(screenWidth * 0.07),
+            padding: EdgeInsets.all(screenWidth * 0.05),
+            decoration: boxDecoration,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //Name Field
+                nameField,
+                const SizedBox(
+                  height: 15,
+                ),
+                //Email Field
+                emailField,
+                const SizedBox(
+                  height: 15,
+                ),
+                // Password Field
+                passwordField,
+                const SizedBox(
+                  height: 15,
+                ),
+                // Confirm Password Field
+                confirmPasswordField,
+              ],
+            ),
           ),
-          //Email Field
-          emailField,
-          const SizedBox(
-            height: 15,
+          SizedBox(
+            height: screenHeight * 0.05,
           ),
-          // Password Field
-          passwordField,
-          const SizedBox(
-            height: 15,
-          ),
-          // Confirm Password Field
-          confirmPasswordField,
+          MainButton(
+            screenHeight: screenHeight,
+            screenWidth: screenWidth,
+            title: 'Sign up',
+            onTapFunction: () {
+              moveToLogin(context);
+            },
+          )
         ],
       ),
     );
