@@ -1,0 +1,82 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/material.dart';
+
+import '../../utils/themes.dart';
+import 'income-expense-column.dart';
+
+class BalanceCard extends StatefulWidget {
+  final double screenHeight;
+  final double screenWidth;
+  const BalanceCard({
+    Key? key,
+    required this.screenHeight,
+    required this.screenWidth,
+  }) : super(key: key);
+
+  @override
+  State<BalanceCard> createState() => _BalanceCardState();
+}
+
+class _BalanceCardState extends State<BalanceCard> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: widget.screenHeight * 0.25,
+      width: widget.screenWidth,
+      margin: EdgeInsets.only(
+          left: widget.screenWidth * 0.07,
+          right: widget.screenWidth * 0.07,
+          top: widget.screenWidth * 0.01),
+      padding: EdgeInsets.symmetric(
+          horizontal: widget.screenWidth * 0.05,
+          vertical: widget.screenWidth * 0.07),
+      decoration: const BoxDecoration(
+        color: MyThemes.darkGreenColor,
+        boxShadow: [
+          BoxShadow(
+              color: MyThemes.greenColorShadow,
+              offset: Offset(5, 7),
+              blurRadius: 40)
+        ],
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      ),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Total Balance',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  '\$ 2,906.00',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 28),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IncomeExpenseColumn(
+                    image: Image.asset(
+                      'assets/icons/arrow-down.png',
+                    ),
+                    transactionType: 'Income'),
+                IncomeExpenseColumn(
+                    image: Image.asset('assets/icons/arrow-up.png'),
+                    transactionType: 'Expense')
+              ],
+            )
+          ]),
+    );
+  }
+}

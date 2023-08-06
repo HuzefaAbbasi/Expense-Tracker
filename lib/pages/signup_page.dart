@@ -4,7 +4,7 @@ import 'package:money_tracker/utils/routes.dart';
 import 'package:money_tracker/widgets/appbar.dart';
 import 'package:money_tracker/widgets/main_button.dart';
 import 'package:money_tracker/widgets/background.dart';
-import 'package:money_tracker/widgets/signup_widgets/form.dart';
+import 'package:money_tracker/widgets/signup_widgets/signup_form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Signup extends StatefulWidget {

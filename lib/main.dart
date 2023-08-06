@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:money_tracker/pages/add-transaction_page.dart';
 import 'package:money_tracker/pages/home_page.dart';
 import 'package:money_tracker/pages/login_page.dart';
 import 'package:money_tracker/pages/signup_page.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
             ),
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home: const AddTransaction(),
       routes: {
         MyRoutes.loginRoute: (context) => const Login(),
         MyRoutes.onBoardingRoute: (context) => const OnBoarding(),
