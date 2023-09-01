@@ -2,12 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/widgets/homewidgets/page-header.dart';
 import 'package:money_tracker/widgets/homewidgets/transactions-list.dart';
+import 'package:money_tracker/widgets/transactions_widgets/duration-row.dart';
 
 import '../../utils/themes.dart';
-import 'balance-card.dart';
 
-class HomeBody extends StatelessWidget {
-  const HomeBody({
+class TransactionsBody extends StatelessWidget {
+  const TransactionsBody({
     Key? key,
   }) : super(key: key);
 
@@ -18,12 +18,19 @@ class HomeBody extends StatelessWidget {
 
     return Column(
       children: [
-        SizedBox(height: screenHeight * 0.07),
-        Padding(
-          padding: EdgeInsets.all(screenWidth * 0.06),
-          child: const PageHeader(),
+        SizedBox(height: screenHeight * 0.03),
+        DurationRow(screenWidth: screenWidth, screenHeight: screenHeight),
+        SizedBox(
+          height: 10,
         ),
-        BalanceCard(screenHeight: screenHeight, screenWidth: screenWidth),
+        IncomeExpenseChoice(),
+        SizedBox(
+          height: 10,
+        ),
+
+        Placeholder(
+          fallbackHeight: screenHeight * 0.3,
+        ),
         const SizedBox(
           height: 30,
         ),
@@ -58,6 +65,33 @@ class ListTitle extends StatelessWidget {
           'See all',
           style: TextStyle(color: MyThemes.textColor),
         ))
+      ],
+    );
+  }
+}
+
+class IncomeExpenseChoice extends StatefulWidget {
+  const IncomeExpenseChoice({super.key});
+
+  @override
+  State<IncomeExpenseChoice> createState() => _IncomeExpenseChoiceState();
+}
+
+class _IncomeExpenseChoiceState extends State<IncomeExpenseChoice> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        DropdownButton<String>(
+            value: 'Income',
+            items: ['Expense', 'Income'].map((String item) {
+              return DropdownMenuItem<String>(
+                value: item,
+                child: Text(item),
+              );
+            }).toList(),
+            onChanged: (String? item) {})
       ],
     );
   }

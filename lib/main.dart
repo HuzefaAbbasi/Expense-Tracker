@@ -4,6 +4,7 @@ import 'package:money_tracker/pages/add-transaction_page.dart';
 import 'package:money_tracker/pages/home_page.dart';
 import 'package:money_tracker/pages/login_page.dart';
 import 'package:money_tracker/pages/signup_page.dart';
+import 'package:money_tracker/pages/transactions_page.dart';
 import 'package:money_tracker/ui/on_boarding.dart';
 import 'package:money_tracker/utils/routes.dart';
 import 'package:money_tracker/utils/themes.dart';
@@ -28,12 +29,13 @@ class MyApp extends StatelessWidget {
             ),
       ),
       debugShowCheckedModeBanner: false,
-      home: const AddTransaction(),
+      home: const Transactions(),
       routes: {
         MyRoutes.loginRoute: (context) => const Login(),
         MyRoutes.onBoardingRoute: (context) => const OnBoarding(),
         MyRoutes.signupRoute: (context) => const Signup(),
-        MyRoutes.homeRoue: (context) => const HomePage(),
+        MyRoutes.homeRoute: (context) => const HomePage(),
+        MyRoutes.transactionsRoute: (context) => const Transactions(),
       },
     );
   }

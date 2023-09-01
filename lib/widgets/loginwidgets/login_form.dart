@@ -41,7 +41,7 @@ class _LoginFormState extends State<LoginForm> {
               password: _passwordController.text.trim());
           debugPrint('Logged in');
           // ignore: use_build_context_synchronously
-          Navigator.pushNamed(context, MyRoutes.homeRoue);
+          Navigator.pushNamed(context, MyRoutes.homeRoute);
         } on FirebaseAuthException catch (e) {
           if (e.code == 'wrong-password') {
             MyToast.makeToast('Invalid Password');

@@ -23,21 +23,31 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
   final TextEditingController _typeController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
-  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _dateController =
+      TextEditingController(text: '2023-08-06');
   final TextEditingController _amountController = TextEditingController();
 
-  var _selectedOption =
+  // Transaction Type selected item
+  var _selectedOptionType =
       MyDropDownListItem('assets/icons/income_icon.png', 'Income');
+  // Income selected item
+  var _selectedOptionIncome =
+      MyDropDownListItem('assets/icons/income_categories/salary.png', 'Salary');
+  // Expense selected item
+  var _selectedOptionExpense = MyDropDownListItem(
+      'assets/icons/expense_categories/housing.png', 'Housing');
 
-  final List<MyDropDownListItem> _incomeExpenseList = [
-    MyDropDownListItem('assets/icons/income_icon.png', 'Income'),
-    MyDropDownListItem('assets/icons/expense_icon.png', 'Expense'),
-  ];
+  var isIncome = true;
+
   // For firebase authentication
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
+    var selectedCategoryList = (isIncome)
+        ? MyLists().incomeCategoriesList
+        : MyLists().expenseCategoriesList;
 
     //Box Decoration
     const boxDecoration = BoxDecoration(
@@ -60,24 +70,28 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
           child: SizedBox(
             height: screenHeight * 0.06,
             child: DropdownButtonFormField<MyDropDownListItem>(
-              value: _selectedOption,
-              items: _incomeExpenseList.map((MyDropDownListItem item) {
+              value: _selectedOptionType,
+              items: MyLists().incomeExpenseList.map((MyDropDownListItem item) {
                 return DropdownMenuItem<MyDropDownListItem>(
                   value: item,
-                  child: Row(
-                    children: [
-                      Image.asset(item.iconPath),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      Text(item.title),
-                    ],
+                  child: SizedBox(
+                    height: 25,
+                    child: Row(
+                      children: [
+                        Image.asset(item.iconPath),
+                        const SizedBox(
+                          width: 12,
+                        ),
+                        Text(item.title),
+                      ],
+                    ),
                   ),
                 );
               }).toList(),
-              onChanged: (MyDropDownListItem? it) {
+              onChanged: (MyDropDownListItem? item) {
                 setState(() {
-                  _selectedOption = it!;
+                  _selectedOptionType = item!;
+                  isIncome = (item.title == 'Income');
                 });
               },
               decoration: giveInputDecorationForDropDown(),
@@ -87,8 +101,53 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
       ],
     );
 
-    //Name Field
-    var nameField = Column(
+    var category = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Category",
+          style: TextStyle(color: MyThemes.textColor),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 12.0),
+          child: SizedBox(
+            height: screenHeight * 0.06,
+            child: DropdownButtonFormField<MyDropDownListItem>(
+              value:
+                  (isIncome) ? _selectedOptionIncome : _selectedOptionExpense,
+              items: selectedCategoryList.map((MyDropDownListItem item) {
+                return DropdownMenuItem<MyDropDownListItem>(
+                  value: item,
+                  child: SizedBox(
+                    height: 25,
+                    child: Row(
+                      children: [
+                        Image.asset(item.iconPath),
+                        const SizedBox(
+                          width: 12,
+                        ),
+                        Text(item.title),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
+              onChanged: (MyDropDownListItem? it) {
+                setState(() {
+                  (isIncome)
+                      ? _selectedOptionIncome = it!
+                      : _selectedOptionExpense = it!;
+                });
+              },
+              decoration: giveInputDecorationForDropDown(),
+            ),
+          ),
+        )
+      ],
+    );
+
+    //Title Field
+    var title = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
@@ -115,68 +174,64 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
         )
       ],
     );
-    //Email Field
-    // var emailField = Column(
-    //   crossAxisAlignment: CrossAxisAlignment.start,
-    //   children: [
-    //     const Text(
-    //       "Email",
-    //       style: TextStyle(color: MyThemes.textColor),
-    //     ),
-    //     Padding(
-    //       padding: const EdgeInsets.only(top: 12.0),
-    //       child: SizedBox(
-    //         height: screenHeight * 0.06,
-    //         child: TextFormField(
-    //           controller: _emailController,
-    //           keyboardType: TextInputType.emailAddress,
-    //           decoration: giveInputDecoration(
-    //               hint: 'Enter email', icon: const Icon(CupertinoIcons.at)),
-    //           validator: (value) {
-    //             if (value == null || value.isEmpty) {
-    //               return 'Please enter email';
-    //             }
-    //             return null;
-    //           },
-    //         ),
-    //       ),
-    //     )
-    //   ],
-    // );
-    // //Password Field
-    // var passwordField = Column(
-    //   crossAxisAlignment: CrossAxisAlignment.start,
-    //   children: [
-    //     const Text(
-    //       "Password",
-    //       style: TextStyle(color: MyThemes.textColor),
-    //     ),
-    //     Padding(
-    //       padding: const EdgeInsets.only(top: 12.0),
-    //       child: SizedBox(
-    //         height: screenHeight * 0.06,
-    //         child: TextFormField(
-    //           controller: _passwordController,
-    //           obscureText: !isVisible1,
-    //           decoration: giveInputDecorationPassword1(
-    //             hint: 'Enter password',
-    //             icon: const Icon(Icons.lock_outline),
-    //           ),
-    //           validator: (value) {
-    //             if (value == null || value.isEmpty) {
-    //               return 'Please enter password';
-    //             }
-    //             if (value.length < 9) {
-    //               return 'Password should be atleast 8 characters long';
-    //             }
-    //             return null;
-    //           },
-    //         ),
-    //       ),
-    //     )
-    //   ],
-    // );
-    // //Confirm Password Field
+
+    var dateField = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Date",
+          style: TextStyle(color: MyThemes.textColor),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 12.0),
+          child: SizedBox(
+            height: screenHeight * 0.06,
+            child: TextFormField(
+              controller: _dateController,
+              keyboardType: TextInputType.datetime,
+              decoration: giveInputDecorationDate(),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter email';
+                }
+                return null;
+              },
+            ),
+          ),
+        )
+      ],
+    );
+    //Amount Field
+    var amountField = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Amount",
+          style: TextStyle(color: MyThemes.textColor),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 12.0),
+          child: SizedBox(
+            height: screenHeight * 0.06,
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              controller: _amountController,
+              decoration: giveInputDecorationAmount(),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter password';
+                }
+                if (value.length < 9) {
+                  return 'Password should be atleast 8 characters long';
+                }
+                return null;
+              },
+            ),
+          ),
+        )
+      ],
+    );
+    //Confirm Password Field
     // var confirmPasswordField = Column(
     //   crossAxisAlignment: CrossAxisAlignment.start,
     //   children: [
@@ -215,7 +270,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
       child: Column(
         children: [
           Container(
-            height: screenHeight * 0.5,
+            height: screenHeight * 0.6,
             width: screenWidth,
             margin: EdgeInsets.all(screenWidth * 0.07),
             padding: EdgeInsets.all(screenWidth * 0.05),
@@ -228,10 +283,20 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
                   height: 15,
                 ),
                 //Name Field
-                nameField,
+                title,
                 const SizedBox(
                   height: 15,
                 ),
+                category,
+                const SizedBox(
+                  height: 15,
+                ),
+                dateField,
+                const SizedBox(
+                  height: 15,
+                ),
+                amountField
+
                 // //Email Field
                 // emailField,
                 // const SizedBox(
@@ -248,12 +313,12 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
             ),
           ),
           SizedBox(
-            height: screenHeight * 0.05,
+            height: screenHeight * 0.03,
           ),
           MainButton(
             screenHeight: screenHeight,
             screenWidth: screenWidth,
-            title: 'Sign up',
+            title: 'Add',
             onTapFunction: () {},
           )
         ],
@@ -298,63 +363,66 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
     );
   }
 
-// // decorations for password field, separate because of visibility
-//   InputDecoration giveInputDecorationPassword1(
-//       {required String hint, required Icon icon}) {
-//     return InputDecoration(
-//       hintText: hint,
-//       hintStyle: const TextStyle(fontSize: 15),
-//       prefixIcon: icon,
-//       suffixIcon: GestureDetector(
-//         onTap: () {
-//           isVisible1 = !isVisible1;
-//           setState(() {});
-//         },
-//         child: (isVisible1)
-//             ? const Icon(Icons.visibility_outlined)
-//             : const Icon(Icons.visibility_off_outlined),
-//       ),
-//       focusedBorder: const OutlineInputBorder(
-//         borderSide: BorderSide(
-//           color: MyThemes.greenColor,
-//         ),
-//       ),
-//       enabledBorder: const OutlineInputBorder(
-//           borderSide: BorderSide(
-//             color: MyThemes.greenColor,
-//             width: 1.6,
-//           ),
-//           borderRadius: BorderRadius.all(Radius.circular(8))),
-//     );
-//   }
+// decorations for Date field
+  InputDecoration giveInputDecorationDate() {
+    return InputDecoration(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+      suffixIcon: GestureDetector(
+        onTap: () {
+          showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(2000),
+              lastDate: DateTime.now());
+        },
+        child: const Icon(Icons.calendar_month),
+      ),
+      focusedBorder: const OutlineInputBorder(
+        borderSide: BorderSide(
+          color: MyThemes.greenColor,
+        ),
+      ),
+      enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: MyThemes.greenColor,
+            width: 1.6,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(8))),
+    );
+  }
 
-//   InputDecoration giveInputDecorationPassword2(
-//       {required String hint, required Icon icon}) {
-//     return InputDecoration(
-//       hintText: hint,
-//       hintStyle: const TextStyle(fontSize: 15),
-//       prefixIcon: icon,
-//       suffixIcon: GestureDetector(
-//         onTap: () {
-//           isVisible2 = !isVisible2;
-//           setState(() {});
-//         },
-//         child: (isVisible2)
-//             ? const Icon(Icons.visibility_outlined)
-//             : const Icon(Icons.visibility_off_outlined),
-//       ),
-//       focusedBorder: const OutlineInputBorder(
-//         borderSide: BorderSide(
-//           color: MyThemes.greenColor,
-//         ),
-//       ),
-//       enabledBorder: const OutlineInputBorder(
-//           borderSide: BorderSide(
-//             color: MyThemes.greenColor,
-//             width: 1.6,
-//           ),
-//           borderRadius: BorderRadius.all(Radius.circular(8))),
-//     );
-//   }
-// }
+  InputDecoration giveInputDecorationAmount() {
+    return InputDecoration(
+      hintText: 'Enter Amount',
+      hintStyle: const TextStyle(fontSize: 15),
+      prefixIcon: const Icon(Icons.attach_money),
+      suffixIcon: GestureDetector(
+          onTap: () {},
+          child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Clear',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: MyThemes.greenColor, fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+          )),
+      focusedBorder: const OutlineInputBorder(
+        borderSide: BorderSide(
+          color: MyThemes.greenColor,
+        ),
+      ),
+      enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: MyThemes.greenColor,
+            width: 1.6,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(8))),
+    );
+  }
 }

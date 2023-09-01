@@ -16,8 +16,7 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     List list = List.generate(10, (index) => TransactionModel().list[0]);
 
-    return SizedBox(
-      height: screenHeight * 0.39,
+    return Expanded(
       child: ListView.builder(
         itemCount: list.length,
         padding: EdgeInsets.zero,

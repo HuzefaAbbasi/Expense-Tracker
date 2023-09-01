@@ -20,8 +20,10 @@ class AddTransaction extends StatelessWidget {
       body: Stack(
         children: [
           Background(screenWidth: screenWidth, screenHeight: screenHeight),
-          AddTransactionBody(
-              screenHeight: screenHeight, screenWidth: screenWidth)
+          SingleChildScrollView(
+            child: AddTransactionBody(
+                screenHeight: screenHeight, screenWidth: screenWidth),
+          )
         ],
       ),
     );
@@ -41,7 +43,7 @@ class AddTransactionBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
       SizedBox(
-        height: screenHeight * 0.2,
+        height: screenHeight * 0.15,
       ),
       const AddTransactionForm(),
     ]);

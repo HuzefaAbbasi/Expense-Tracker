@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           Background(screenWidth: screenWidth, screenHeight: screenHeight),
-          HomeBody(screenHeight: screenHeight, screenWidth: screenWidth)
+          const HomeBody(),
         ],
       ),
       bottomNavigationBar:
