@@ -29,13 +29,14 @@ class MyApp extends StatelessWidget {
             ),
       ),
       debugShowCheckedModeBanner: false,
-      home: const Transactions(),
+      home: const HomePage(),
       routes: {
         MyRoutes.loginRoute: (context) => const Login(),
         MyRoutes.onBoardingRoute: (context) => const OnBoarding(),
         MyRoutes.signupRoute: (context) => const Signup(),
         MyRoutes.homeRoute: (context) => const HomePage(),
         MyRoutes.transactionsRoute: (context) => const Transactions(),
+        MyRoutes.addTransactionsRoute: (context) => const AddTransaction(),
       },
     );
   }

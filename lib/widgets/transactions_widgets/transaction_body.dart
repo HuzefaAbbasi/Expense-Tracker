@@ -6,6 +6,8 @@ import 'package:money_tracker/widgets/transactions_widgets/duration-row.dart';
 
 import '../../utils/themes.dart';
 
+var incomeOrExpenseChoice = 0;
+
 class TransactionsBody extends StatelessWidget {
   const TransactionsBody({
     Key? key,
@@ -16,15 +18,17 @@ class TransactionsBody extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
+    //var to tell what user has choosen from drop down
+
     return Column(
       children: [
         SizedBox(height: screenHeight * 0.03),
         DurationRow(screenWidth: screenWidth, screenHeight: screenHeight),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
-        IncomeExpenseChoice(),
-        SizedBox(
+        const IncomeExpenseChoice(),
+        const SizedBox(
           height: 10,
         ),
 
@@ -42,7 +46,11 @@ class TransactionsBody extends StatelessWidget {
         const SizedBox(
           height: 15,
         ),
-        TransactionList(screenHeight: screenHeight)
+        TransactionList(
+          screenHeight: screenHeight,
+          duration: activeButtonDuration,
+          incomeExpense: incomeOrExpenseChoice,
+        )
       ],
     );
   }
@@ -88,10 +96,17 @@ class _IncomeExpenseChoiceState extends State<IncomeExpenseChoice> {
             items: ['Expense', 'Income'].map((String item) {
               return DropdownMenuItem<String>(
                 value: item,
-                child: Text(item),
+                child: Text(
+                  '   $item',
+                  // textAlign: TextAlign.center,
+                ),
               );
             }).toList(),
-            onChanged: (String? item) {})
+            onChanged: (String? item) {
+              (item == 'Expense')
+                  ? incomeOrExpenseChoice = 1
+                  : incomeOrExpenseChoice;
+            })
       ],
     );
   }

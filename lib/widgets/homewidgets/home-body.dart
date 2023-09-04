@@ -35,7 +35,12 @@ class HomeBody extends StatelessWidget {
         const SizedBox(
           height: 15,
         ),
-        TransactionList(screenHeight: screenHeight)
+        TransactionList(
+          screenHeight: screenHeight,
+          duration: 'Not Specified',
+          incomeExpense:
+              2, // 2 is used for all transactions, both income and expense
+        )
       ],
     );
   }

@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:money_tracker/firebase_services/firebase_operations.dart';
 
 import '../../utils/themes.dart';
 import 'income-expense-column.dart';
@@ -54,29 +55,53 @@ class _BalanceCardState extends State<BalanceCard> {
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                  '\$ 2,906.00',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 28),
-                ),
+                BalanceAmount(),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IncomeExpenseColumn(
-                    image: Image.asset(
-                      'assets/icons/arrow-down.png',
-                    ),
-                    transactionType: 'Income'),
+                  image: Image.asset(
+                    'assets/icons/arrow-down.png',
+                  ),
+                  transactionType: 'Income',
+                  isIncome: true,
+                ),
                 IncomeExpenseColumn(
-                    image: Image.asset('assets/icons/arrow-up.png'),
-                    transactionType: 'Expense')
+                  image: Image.asset('assets/icons/arrow-up.png'),
+                  transactionType: 'Expense',
+                  isIncome: false,
+                )
               ],
             )
           ]),
     );
+  }
+}
+
+class BalanceAmount extends StatelessWidget {
+  const BalanceAmount({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<double>(
+        future: MyFirebaseOperations().getBalance(),
+        builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator(); // Show a loading indicator while waiting
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            final balance = snapshot.data;
+            return Text(
+              '\$ $balance',
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 28),
+            );
+          }
+        });
   }
 }

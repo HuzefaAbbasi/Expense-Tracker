@@ -1,29 +1,64 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:money_tracker/models/drop-down-list-item.dart';
 
+import '../../firebase_services/firebase_operations.dart';
 import '../../models/transaction.dart';
 import '../../utils/themes.dart';
 
 class TransactionList extends StatelessWidget {
   final double screenHeight;
+  final ref = FirebaseDatabase.instance.ref('Transactions');
+  String duration;
+  int incomeExpense;
 
-  const TransactionList({
+  TransactionList({
     Key? key,
     required this.screenHeight,
+    required this.duration,
+    required this.incomeExpense,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List list = List.generate(10, (index) => TransactionModel().list[0]);
-
-    return Expanded(
-      child: ListView.builder(
-        itemCount: list.length,
-        padding: EdgeInsets.zero,
-        itemBuilder: (BuildContext context, int index) =>
-            TransactionItem(item: list[index]),
-      ),
-    );
+    return FutureBuilder<List<MyTransaction>>(
+        future: (incomeExpense == 2)
+            ? MyFirebaseOperations().getAllTransactions()
+            : MyFirebaseOperations().getTransactions(
+                duration: duration, transactionType: incomeExpense),
+        builder: (BuildContext context,
+            AsyncSnapshot<List<MyTransaction>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator(); // Show a loading indicator while waiting
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            final list = snapshot.data;
+            return Expanded(
+                child: ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: list!.length,
+              itemBuilder: (context, index) =>
+                  TransactionItem(item: list[index]),
+            ));
+          }
+        });
+    // return Expanded(
+    //     child: FirebaseAnimatedList(
+    //         query: ref,
+    //         padding: EdgeInsets.zero,
+    //         itemBuilder: (context, snapshot, animation, index) {
+    //           var transaction = MyTransaction(
+    //               0,
+    //               snapshot.child('transactionType').value as int,
+    //               snapshot.child('title').value!.toString(),
+    //               snapshot.child('category').value! as int,
+    //               snapshot.child('date').value!.toString(),
+    //               (snapshot.child('amount').value! as int).toDouble());
+    //           return TransactionItem(item: transaction);
+    //         }));
   }
 }
 
@@ -36,6 +71,9 @@ class TransactionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var imagePath = (item.type == 0)
+        ? MyLists().incomeCategoriesList[item.category].iconPath
+        : MyLists().expenseCategoriesList[item.category].iconPath;
     return SizedBox(
       height: 60,
       child: Padding(
@@ -52,7 +90,7 @@ class TransactionItem extends StatelessWidget {
                     decoration: const BoxDecoration(
                         color: Color(0xFFF0F6F5),
                         borderRadius: BorderRadius.all(Radius.circular(8))),
-                    child: Image.asset(item.image)),
+                    child: Image.asset(imagePath)),
                 const SizedBox(
                   width: 10,
                 ),
@@ -69,14 +107,14 @@ class TransactionItem extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      item.day,
+                      item.date,
                       style: const TextStyle(color: MyThemes.textColor),
                     )
                   ],
                 )
               ],
             ),
-            (item.type)
+            (item.type == 0)
                 ? Text(
                     "+ \$ ${item.amount}",
                     style: const TextStyle(
