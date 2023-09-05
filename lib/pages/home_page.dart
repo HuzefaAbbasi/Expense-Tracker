@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/widgets/background.dart';
 import 'package:money_tracker/widgets/homewidgets/home-body.dart';
-import '../widgets/homewidgets/custom-navbar.dart';
+import '../widgets/custom-navbar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

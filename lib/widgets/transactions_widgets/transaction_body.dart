@@ -1,24 +1,25 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:money_tracker/utils/providers.dart';
 import 'package:money_tracker/widgets/homewidgets/page-header.dart';
 import 'package:money_tracker/widgets/homewidgets/transactions-list.dart';
 import 'package:money_tracker/widgets/transactions_widgets/duration-row.dart';
 
 import '../../utils/themes.dart';
 
-var incomeOrExpenseChoice = 0;
-
-class TransactionsBody extends StatelessWidget {
+class TransactionsBody extends ConsumerWidget {
   const TransactionsBody({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    //var to tell what user has choosen from drop down
+    final incomeOrExpenseChoice = ref.watch(incomeOrExpenseProvider);
+    final durationChoice = ref.watch(durationProvider);
 
     return Column(
       children: [
@@ -48,7 +49,7 @@ class TransactionsBody extends StatelessWidget {
         ),
         TransactionList(
           screenHeight: screenHeight,
-          duration: activeButtonDuration,
+          duration: durationChoice,
           incomeExpense: incomeOrExpenseChoice,
         )
       ],
@@ -78,21 +79,31 @@ class ListTitle extends StatelessWidget {
   }
 }
 
-class IncomeExpenseChoice extends StatefulWidget {
-  const IncomeExpenseChoice({super.key});
+class IncomeExpenseChoice extends ConsumerStatefulWidget {
+  const IncomeExpenseChoice({Key? key}) : super(key: key);
 
   @override
-  State<IncomeExpenseChoice> createState() => _IncomeExpenseChoiceState();
+  ConsumerState<IncomeExpenseChoice> createState() =>
+      _IncomeExpenseChoiceState();
 }
 
-class _IncomeExpenseChoiceState extends State<IncomeExpenseChoice> {
+class _IncomeExpenseChoiceState extends ConsumerState<IncomeExpenseChoice> {
+  // To change the value of provider as user choice is changed
+  void onChange(int value) {
+    setState(() {
+      ref.read(incomeOrExpenseProvider.notifier).update((state) => value);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final incomeORExpense = ref.watch(incomeOrExpenseProvider);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         DropdownButton<String>(
-            value: 'Income',
+            value: (incomeORExpense == 0) ? 'Income' : 'Expense',
             items: ['Expense', 'Income'].map((String item) {
               return DropdownMenuItem<String>(
                 value: item,
@@ -103,9 +114,7 @@ class _IncomeExpenseChoiceState extends State<IncomeExpenseChoice> {
               );
             }).toList(),
             onChanged: (String? item) {
-              (item == 'Expense')
-                  ? incomeOrExpenseChoice = 1
-                  : incomeOrExpenseChoice;
+              (item == 'Expense') ? onChange(1) : onChange(0);
             })
       ],
     );

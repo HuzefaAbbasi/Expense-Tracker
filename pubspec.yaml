@@ -43,7 +43,7 @@ dependencies:
   fluttertoast: ^8.2.2
   intl: ^0.18.1
   flutter_animate: ^4.2.0+1
-
+  flutter_riverpod: ^2.4.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

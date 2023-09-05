@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:money_tracker/utils/providers.dart';
 
 import '../../utils/themes.dart';
 
-String activeButtonDuration =
-    'Day'; // Initialize with the default active button.
-
-class DurationRow extends StatefulWidget {
+class DurationRow extends ConsumerStatefulWidget {
   final double screenWidth;
   final double screenHeight;
+
   const DurationRow({
     Key? key,
     required this.screenWidth,
@@ -15,18 +15,18 @@ class DurationRow extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DurationRowState createState() => _DurationRowState();
+  ConsumerState<DurationRow> createState() => _DurationRowState();
 }
 
-class _DurationRowState extends State<DurationRow> {
+class _DurationRowState extends ConsumerState<DurationRow> {
   void setActiveButton(String button) {
-    setState(() {
-      activeButtonDuration = button;
-    });
+    ref.read(durationProvider.notifier).update((state) => button);
   }
 
   @override
   Widget build(BuildContext context) {
+    final activeButtonDuration = ref.watch(durationProvider);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
