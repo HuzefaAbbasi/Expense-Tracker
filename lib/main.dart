@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
             ),
       ),
       debugShowCheckedModeBanner: false,
-      home: const Transactions(),
+      home: const HomePage(),
       routes: {
         MyRoutes.loginRoute: (context) => const Login(),
         MyRoutes.onBoardingRoute: (context) => const OnBoarding(),

@@ -34,11 +34,13 @@ class TransactionList extends StatelessWidget {
             return const CircularProgressIndicator(); // Show a loading indicator while waiting
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
+          } else if (snapshot.data!.isEmpty) {
+            return const Text('No Data Available');
           } else {
             final list = snapshot.data;
             return Expanded(
                 child: ListView.builder(
-              padding: EdgeInsets.zero,
+              padding: const EdgeInsets.symmetric(vertical: 16),
               itemCount: list!.length,
               itemBuilder: (context, index) =>
                   TransactionItem(item: list[index]),

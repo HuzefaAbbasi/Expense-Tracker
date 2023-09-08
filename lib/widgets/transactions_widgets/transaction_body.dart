@@ -1,9 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:money_tracker/utils/providers.dart';
 import 'package:money_tracker/widgets/homewidgets/page-header.dart';
 import 'package:money_tracker/widgets/homewidgets/transactions-list.dart';
+import 'package:money_tracker/widgets/transactions_widgets/charts.dart';
 import 'package:money_tracker/widgets/transactions_widgets/duration-row.dart';
 
 import '../../utils/themes.dart';
@@ -33,8 +35,13 @@ class TransactionsBody extends ConsumerWidget {
           height: 10,
         ),
 
-        Placeholder(
-          fallbackHeight: screenHeight * 0.3,
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14),
+          height: screenHeight * 0.31,
+          child: const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: MyChart(),
+          ),
         ),
         const SizedBox(
           height: 30,
@@ -42,7 +49,13 @@ class TransactionsBody extends ConsumerWidget {
         //Transaction History Row
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 18.0),
-          child: ListTitle(),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text(
+              'All Transactions',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+          ]),
         ),
         const SizedBox(
           height: 15,

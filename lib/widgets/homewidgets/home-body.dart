@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:money_tracker/utils/routes.dart';
 import 'package:money_tracker/widgets/homewidgets/page-header.dart';
 import 'package:money_tracker/widgets/homewidgets/transactions-list.dart';
 
@@ -51,18 +52,20 @@ class ListTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        const Text(
           'Transaction history',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
         InkWell(
-            child: Text(
-          'See all',
-          style: TextStyle(color: MyThemes.textColor),
-        ))
+            onTap: () =>
+                Navigator.pushNamed(context, MyRoutes.transactionsRoute),
+            child: const Text(
+              'See all',
+              style: TextStyle(color: MyThemes.textColor),
+            ))
       ],
     );
   }
