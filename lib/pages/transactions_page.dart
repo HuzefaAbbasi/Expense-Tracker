@@ -27,11 +27,16 @@ class _TransactionsState extends State<Transactions> {
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: const TransactionsBody(),
-      bottomNavigationBar:
-          CustomNavBar(screenHeight: screenHeight, screenWidth: screenWidth),
+      bottomNavigationBar: CustomNavBar(
+        screenHeight: screenHeight,
+        screenWidth: screenWidth,
+        isHomeActive: false,
+        isTranasactionActive: true,
+      ),
       extendBody: true,
     );
   }

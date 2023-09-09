@@ -45,6 +45,7 @@ dependencies:
   flutter_animate: ^4.2.0+1
   flutter_riverpod: ^2.4.0
   fl_chart: ^0.63.0
+  shared_preferences: ^2.2.1
   
 dev_dependencies:
   flutter_test:

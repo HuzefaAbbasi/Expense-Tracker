@@ -85,8 +85,13 @@ class MyFirebaseOperations {
       data.forEach((key, value) {
         if (value['transactionType'] == transactionType) {
           //Adding transaction to list
-          list.add(MyTransaction(0, value['transactionType'], value['title'],
-              value['category'], value['date'], value['amount'].toDouble()));
+          list.add(MyTransaction(
+              int.parse(value['id']),
+              value['transactionType'],
+              value['title'],
+              value['category'],
+              value['date'],
+              value['amount'].toDouble()));
         }
       });
     }
@@ -105,8 +110,13 @@ class MyFirebaseOperations {
       Map<dynamic, dynamic> data = (snapshot.value as Map);
       data.forEach((key, value) {
         //Adding transaction to list
-        list.add(MyTransaction(0, value['transactionType'], value['title'],
-            value['category'], value['date'], value['amount'].toDouble()));
+        list.add(MyTransaction(
+            int.parse(value['id']),
+            value['transactionType'],
+            value['title'],
+            value['category'],
+            value['date'],
+            value['amount'].toDouble()));
       });
     }
     return list;
@@ -229,5 +239,10 @@ class MyFirebaseOperations {
       }
     }
     return flSpots;
+  }
+
+  void deleteTransaction(String id) {
+    final ref = FirebaseDatabase.instance.ref('Transactions');
+    ref.child(id).remove();
   }
 }

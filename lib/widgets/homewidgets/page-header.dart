@@ -1,8 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:money_tracker/utils/routes.dart';
+import 'package:money_tracker/utils/toast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class PageHeader extends StatelessWidget {
+class PageHeader extends StatefulWidget {
   const PageHeader({super.key});
+
+  @override
+  State<PageHeader> createState() => _PageHeaderState();
+}
+
+class _PageHeaderState extends State<PageHeader> {
+  String? name = '';
+  Future<void> getUserName() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final email = sharedPreferences.getString('email');
+    name = email!.split('@')[0];
+    setState(() {});
+  }
+
+  @override
+  initState() {
+    super.initState();
+    getUserName();
+  }
+
+  void logout() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.remove('email');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,27 +41,34 @@ class PageHeader extends StatelessWidget {
         color: Colors.white.withOpacity(0.06),
         borderRadius: const BorderRadius.all(Radius.circular(6.67)),
       ),
-      child: const Icon(
-        CupertinoIcons.bell,
-        color: Colors.white,
+      child: InkWell(
+        onTap: () async {
+          logout();
+          MyToast.makeToast('Logged out successfully');
+          Navigator.pushNamed(context, MyRoutes.loginRoute);
+        },
+        child: const Icon(
+          Icons.logout_rounded,
+          color: Colors.white,
+        ),
       ),
     );
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Column(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Good Morning,',
               style: TextStyle(color: Colors.white),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
-            Text('Huzefa Abbasi',
-                style: TextStyle(
+            Text(name!,
+                style: const TextStyle(
                     color: Colors.white,
                     // fontWeight: FontWeight.bold,
                     fontSize: 23)),

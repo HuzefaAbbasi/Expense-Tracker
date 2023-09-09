@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:money_tracker/utils/routes.dart';
@@ -7,10 +8,14 @@ import '../utils/themes.dart';
 class CustomNavBar extends StatefulWidget {
   final double screenHeight;
   final double screenWidth;
+  final bool isHomeActive;
+  final bool isTranasactionActive;
   const CustomNavBar({
     Key? key,
     required this.screenHeight,
     required this.screenWidth,
+    required this.isHomeActive,
+    required this.isTranasactionActive,
   }) : super(key: key);
 
   @override
@@ -45,12 +50,21 @@ class _CustomNavBarState extends State<CustomNavBar> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     IconButton(
-                      onPressed: () {},
-                      icon: Image.asset('assets/icons/home-active.png'),
+                      onPressed: () {
+                        Navigator.pushNamed(context, MyRoutes.homeRoute);
+                      },
+                      icon: (widget.isHomeActive)
+                          ? Image.asset('assets/icons/home-active.png')
+                          : Image.asset('assets/icons/home.png'),
                     ),
                     IconButton(
-                        onPressed: () {},
-                        icon: Image.asset('assets/icons/transaction.png'))
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, MyRoutes.transactionsRoute);
+                        },
+                        icon: (widget.isTranasactionActive)
+                            ? Image.asset('assets/icons/transaction-active.png')
+                            : Image.asset('assets/icons/transaction.png'))
                   ],
                 ),
               )),
@@ -68,7 +82,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
                   BoxShadow(
                       color: MyThemes.greenColorShadow.withOpacity(0.7),
                       offset: const Offset(0, 7),
-                      blurRadius: 48)
+                      blurRadius: 30)
                 ],
               ),
               child: const Icon(

@@ -44,6 +44,7 @@ class _SignupFormState extends State<SignupForm> {
               password: _passwordController.text.trim());
           //Navigate to Login page
           // ignore: use_build_context_synchronously
+          MyToast.makeToast('Account has been created successfully');
           Navigator.pushNamed(context, MyRoutes.loginRoute);
         } on FirebaseAuthException catch (e) {
           if (e.code == 'email-already-in-use') {
@@ -146,7 +147,7 @@ class _SignupFormState extends State<SignupForm> {
                 if (value == null || value.isEmpty) {
                   return 'Please enter password';
                 }
-                if (value.length < 9) {
+                if (value.length < 8) {
                   return 'Password should be atleast 8 characters long';
                 }
                 return null;

@@ -22,7 +22,9 @@ class MyChart extends ConsumerWidget {
             return Text('Error: ${snapshot.error}');
           } else {
             final lineChartData = snapshot.data;
-            return LineChart(lineChartData!);
+            return LineChart(
+              lineChartData!,
+            );
           }
         });
   }

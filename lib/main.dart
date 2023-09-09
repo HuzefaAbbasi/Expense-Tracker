@@ -7,6 +7,7 @@ import 'package:money_tracker/pages/login_page.dart';
 import 'package:money_tracker/pages/signup_page.dart';
 import 'package:money_tracker/pages/transactions_page.dart';
 import 'package:money_tracker/ui/on_boarding.dart';
+import 'package:money_tracker/ui/splash_screen.dart';
 import 'package:money_tracker/utils/routes.dart';
 import 'package:money_tracker/utils/themes.dart';
 
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
             ),
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home: const SplashScreen(),
       routes: {
         MyRoutes.loginRoute: (context) => const Login(),
         MyRoutes.onBoardingRoute: (context) => const OnBoarding(),

@@ -81,11 +81,18 @@ class AlreadyAccountRow extends StatelessWidget {
           style: const TextStyle(color: MyThemes.textColor),
         ),
         InkWell(
+            onTap: () {
+              if (clickAbleText == "  Log in") {
+                Navigator.pushNamed(context, MyRoutes.loginRoute);
+              } else {
+                Navigator.pushNamed(context, MyRoutes.signupRoute);
+              }
+            },
             child: Text(
-          clickAbleText,
-          textScaleFactor: 1.1,
-          style: const TextStyle(color: MyThemes.greenColor),
-        ))
+              clickAbleText,
+              textScaleFactor: 1.1,
+              style: const TextStyle(color: MyThemes.greenColor),
+            ))
       ],
     );
   }

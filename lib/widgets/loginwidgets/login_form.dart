@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:money_tracker/utils/routes.dart';
 import 'package:money_tracker/utils/toast.dart';
 import 'package:money_tracker/widgets/loginwidgets/remember_me.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/themes.dart';
 import '../appbar.dart';
 import '../main_button.dart';
@@ -33,13 +34,17 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    final sharedPreferences = SharedPreferences.getInstance();
     moveToHome(BuildContext context) async {
       if (_formKey.currentState!.validate()) {
         try {
           await _auth.signInWithEmailAndPassword(
               email: _emailController.text.trim(),
               password: _passwordController.text.trim());
-          debugPrint('Logged in');
+
+          final prefs = await sharedPreferences;
+          prefs.setString('email', _emailController.text);
+          MyToast.makeToast('Logged in successfully');
           // ignore: use_build_context_synchronously
           Navigator.pushNamed(context, MyRoutes.homeRoute);
         } on FirebaseAuthException catch (e) {
@@ -107,7 +112,7 @@ class _LoginFormState extends State<LoginForm> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter password';
                   }
-                  if (value.length < 9) {
+                  if (value.length < 8) {
                     return 'Password should be atleast 8 characters long';
                   }
                   return null;

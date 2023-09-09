@@ -7,6 +7,8 @@ class OnBoardingimage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        child: Image.asset('assets/images/on_boarding.png').animate().fadeIn());
+        child: Image.asset('assets/images/on_boarding.png')
+            .animate()
+            .moveY(duration: const Duration(milliseconds: 800)));
   }
 }
