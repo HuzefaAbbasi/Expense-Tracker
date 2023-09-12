@@ -15,8 +15,10 @@ class RemeberMeRow extends StatelessWidget {
             const Text('Remember me')
           ],
         ),
-        const InkWell(
-          child: Text(
+        InkWell(
+          onTap: () => ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text('Not supported yet'))),
+          child: const Text(
             'Forget password?',
             style: TextStyle(
                 color: MyThemes.greenColor, fontWeight: FontWeight.bold),

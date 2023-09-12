@@ -39,7 +39,7 @@ class TransactionsBody extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 14),
           height: screenHeight * 0.31,
           child: const Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.symmetric(horizontal: 13),
             child: MyChart(),
           ),
         ),

@@ -1,27 +1,25 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:money_tracker/firebase_services/insert_transaction.dart';
 import 'package:money_tracker/models/drop-down-list-item.dart';
 import 'package:money_tracker/models/transaction.dart';
-import 'package:money_tracker/utils/toast.dart';
-import '../../utils/routes.dart';
+import 'package:money_tracker/utils/providers.dart';
 import '../../utils/themes.dart';
 import '../main_button.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
-class AddTransactionForm extends StatefulWidget {
+class AddTransactionForm extends ConsumerStatefulWidget {
   const AddTransactionForm({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<AddTransactionForm> createState() => _AddTransactionFormState();
+  ConsumerState<AddTransactionForm> createState() => _AddTransactionFormState();
 }
 
-class _AddTransactionFormState extends State<AddTransactionForm> {
+class _AddTransactionFormState extends ConsumerState<AddTransactionForm> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _titleController = TextEditingController();
@@ -300,6 +298,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
                   selectedTransactionCategoryId,
                   _selectedDate,
                   double.parse(_amountController.text)));
+              ref.read(addTransactionProvider.notifier).update((state) => 1);
             },
           )
         ],

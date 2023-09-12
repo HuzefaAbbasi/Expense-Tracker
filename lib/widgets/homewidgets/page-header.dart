@@ -45,7 +45,8 @@ class _PageHeaderState extends State<PageHeader> {
         onTap: () async {
           logout();
           MyToast.makeToast('Logged out successfully');
-          Navigator.pushNamed(context, MyRoutes.loginRoute);
+          Navigator.pushNamedAndRemoveUntil(
+              context, MyRoutes.loginRoute, (route) => false);
         },
         child: const Icon(
           Icons.logout_rounded,

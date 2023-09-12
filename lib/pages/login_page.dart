@@ -3,9 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:money_tracker/widgets/divider.dart';
 import 'package:money_tracker/widgets/loginwidgets/icon_rows.dart';
 import 'package:money_tracker/widgets/loginwidgets/login_form.dart';
-import 'package:money_tracker/widgets/main_button.dart';
 import 'package:money_tracker/widgets/on_boarding_widgets/info_box.dart';
-import '../utils/routes.dart';
 import '../widgets/appbar.dart';
 import '../widgets/background.dart';
 

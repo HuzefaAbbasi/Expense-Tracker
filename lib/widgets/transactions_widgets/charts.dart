@@ -154,7 +154,7 @@ class MyChart extends ConsumerWidget {
                 return null;
               }
               return LineTooltipItem(
-                (flSpot.y.toInt() >= 10.0)
+                (flSpot.y >= 10.0)
                     ? '${flSpot.y * 10}K +'
                     : '${flSpot.y * 10}K',
                 const TextStyle(
@@ -173,7 +173,7 @@ class MyChart extends ConsumerWidget {
       minX: 1,
       maxX: noOfDays.toDouble(),
       minY: 0,
-      maxY: 10,
+      maxY: 12,
       lineBarsData: [
         LineChartBarData(
           spots: await MyFirebaseOperations()

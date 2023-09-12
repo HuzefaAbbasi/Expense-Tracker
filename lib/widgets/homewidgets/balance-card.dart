@@ -1,11 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:money_tracker/firebase_services/firebase_operations.dart';
+import 'package:money_tracker/utils/providers.dart';
+import 'package:money_tracker/utils/routes.dart';
 
 import '../../utils/themes.dart';
 import 'income-expense-column.dart';
 
-class BalanceCard extends StatefulWidget {
+class BalanceCard extends ConsumerStatefulWidget {
   final double screenHeight;
   final double screenWidth;
   const BalanceCard({
@@ -15,10 +18,10 @@ class BalanceCard extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<BalanceCard> createState() => _BalanceCardState();
+  ConsumerState<BalanceCard> createState() => _BalanceCardState();
 }
 
-class _BalanceCardState extends State<BalanceCard> {
+class _BalanceCardState extends ConsumerState<BalanceCard> {
   @override
   Widget build(BuildContext context) {
     return Container(

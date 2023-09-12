@@ -1,17 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:money_tracker/models/drop-down-list-item.dart';
+import 'package:money_tracker/utils/providers.dart';
 import 'package:money_tracker/utils/toast.dart';
 
 import '../../firebase_services/firebase_operations.dart';
 import '../../models/transaction.dart';
 import '../../utils/themes.dart';
 
-class TransactionList extends StatelessWidget {
+class TransactionList extends ConsumerWidget {
   final double screenHeight;
   final ref = FirebaseDatabase.instance.ref('Transactions');
   String duration;
@@ -25,7 +26,8 @@ class TransactionList extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(addTransactionProvider);
     return FutureBuilder<List<MyTransaction>>(
         future: (incomeExpense == 2)
             ? MyFirebaseOperations().getAllTransactions()
@@ -43,7 +45,8 @@ class TransactionList extends StatelessWidget {
             final list = snapshot.data;
             return Expanded(
                 child: ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              shrinkWrap: true,
+              padding: EdgeInsets.only(bottom: screenHeight * 0.09),
               itemCount: list!.length,
               itemBuilder: (context, index) =>
                   TransactionItem(item: list[index]),
