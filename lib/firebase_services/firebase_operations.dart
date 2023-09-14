@@ -233,20 +233,23 @@ class MyFirebaseOperations {
       }
     } else {
       Map<int, double> daysOfMonth = {};
+      for (int i = 1; i <= 31; i++) {
+        daysOfMonth[i] = 0;
+      }
       for (int i = 0; i < transactions.length; i++) {
         MyTransaction transaction = transactions[i];
         // Parse the transaction date to get the day of the week
         DateTime transactionDate = DateTime.parse(transaction.date);
         int day = transactionDate.day;
-        // Update the sum for the corresponding day of the week
         // Update the sum for the corresponding month
         double? prevVal = 0;
         if (daysOfMonth.containsKey(day)) {
           prevVal = daysOfMonth[day] ?? 0;
           daysOfMonth[day] = prevVal + transaction.amount;
-        } else {
-          daysOfMonth[day] = transaction.amount;
         }
+        //  else {
+        //   daysOfMonth[day] = transaction.amount;
+        // }
       }
       // Iterate through the values in the map and create FlSpot objects
       for (int i = 0; i < daysOfMonth.length; i++) {
