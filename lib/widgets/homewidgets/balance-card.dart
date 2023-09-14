@@ -83,11 +83,12 @@ class _BalanceCardState extends ConsumerState<BalanceCard> {
   }
 }
 
-class BalanceAmount extends StatelessWidget {
+class BalanceAmount extends ConsumerWidget {
   const BalanceAmount({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(addTransactionProvider);
     return FutureBuilder<double>(
         future: MyFirebaseOperations().getBalance(),
         builder: (BuildContext context, AsyncSnapshot<double> snapshot) {

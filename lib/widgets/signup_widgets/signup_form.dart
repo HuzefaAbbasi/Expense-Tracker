@@ -206,18 +206,18 @@ class _SignupFormState extends State<SignupForm> {
               children: [
                 //Name Field
                 nameField,
-                const SizedBox(
-                  height: 15,
+                SizedBox(
+                  height: screenHeight * 0.02,
                 ),
                 //Email Field
                 emailField,
-                const SizedBox(
-                  height: 15,
+                SizedBox(
+                  height: screenHeight * 0.02,
                 ),
                 // Password Field
                 passwordField,
-                const SizedBox(
-                  height: 15,
+                SizedBox(
+                  height: screenHeight * 0.02,
                 ),
                 // Confirm Password Field
                 confirmPasswordField,

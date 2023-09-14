@@ -254,7 +254,7 @@ class _AddTransactionFormState extends ConsumerState<AddTransactionForm> {
       child: Column(
         children: [
           Container(
-            height: screenHeight * 0.6,
+            height: screenHeight * 0.63,
             width: screenWidth,
             margin: EdgeInsets.all(screenWidth * 0.07),
             padding: EdgeInsets.all(screenWidth * 0.05),
@@ -263,21 +263,21 @@ class _AddTransactionFormState extends ConsumerState<AddTransactionForm> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 transactionype,
-                const SizedBox(
-                  height: 15,
+                SizedBox(
+                  height: screenHeight * 0.02,
                 ),
                 //Name Field
                 title,
-                const SizedBox(
-                  height: 15,
+                SizedBox(
+                  height: screenHeight * 0.02,
                 ),
                 category,
-                const SizedBox(
-                  height: 15,
+                SizedBox(
+                  height: screenHeight * 0.02,
                 ),
                 dateField,
-                const SizedBox(
-                  height: 15,
+                SizedBox(
+                  height: screenHeight * 0.02,
                 ),
                 amountField
               ],

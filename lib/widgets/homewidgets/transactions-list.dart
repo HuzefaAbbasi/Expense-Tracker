@@ -56,7 +56,7 @@ class TransactionList extends ConsumerWidget {
   }
 }
 
-class TransactionItem extends StatefulWidget {
+class TransactionItem extends ConsumerStatefulWidget {
   final MyTransaction item;
   const TransactionItem({
     Key? key,
@@ -64,10 +64,10 @@ class TransactionItem extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<TransactionItem> createState() => _TransactionItemState();
+  ConsumerState<TransactionItem> createState() => _TransactionItemState();
 }
 
-class _TransactionItemState extends State<TransactionItem> {
+class _TransactionItemState extends ConsumerState<TransactionItem> {
   var isLongPressed = false;
   @override
   Widget build(BuildContext context) {
@@ -109,6 +109,10 @@ class _TransactionItemState extends State<TransactionItem> {
                                 MyFirebaseOperations().deleteTransaction(
                                     widget.item.id.toString());
                                 MyToast.makeToast('Transaction Deleted');
+                                // just so widget listens to change, doesnt matter what is the value
+                                ref
+                                    .read(addTransactionProvider.notifier)
+                                    .update((state) => 6);
                               }).animate().flipH()
                           : Image.asset(imagePath)),
                   const SizedBox(

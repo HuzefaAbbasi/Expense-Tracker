@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -6,9 +7,15 @@ import 'package:money_tracker/models/transaction.dart';
 
 class MyFirebaseOperations {
   final ref = FirebaseDatabase.instance.ref();
+  final _auth = FirebaseAuth.instance;
 
   Future<double> getIncome() async {
-    final event = await ref.child('Transactions').once();
+    final userId = _auth.currentUser!.uid.toString();
+    final event = await ref
+        .child('Transactions')
+        .orderByChild('userId')
+        .equalTo(userId)
+        .once();
     final snapshot = event.snapshot;
     double income = 0;
     if (snapshot.value != null) {
@@ -23,7 +30,12 @@ class MyFirebaseOperations {
   }
 
   Future<double> getExpense() async {
-    final event = await ref.child('Transactions').once();
+    final userId = _auth.currentUser!.uid.toString();
+    final event = await ref
+        .child('Transactions')
+        .orderByChild('userId')
+        .equalTo(userId)
+        .once();
     final snapshot = event.snapshot;
     double income = 0;
     if (snapshot.value != null) {
@@ -45,6 +57,7 @@ class MyFirebaseOperations {
     required String duration,
     required int transactionType,
   }) async {
+    final userId = _auth.currentUser!.uid;
     List<MyTransaction> list = [];
 
     // Get the current date.
@@ -83,7 +96,8 @@ class MyFirebaseOperations {
     if (snapshot.value != null) {
       Map<dynamic, dynamic> data = (snapshot.value as Map);
       data.forEach((key, value) {
-        if (value['transactionType'] == transactionType) {
+        if (value['transactionType'] == transactionType &&
+            value['userId'] == userId) {
           //Adding transaction to list
           list.add(MyTransaction(
               int.parse(value['id']),
@@ -100,10 +114,15 @@ class MyFirebaseOperations {
 
   // To get list of all transactions
   Future<List<MyTransaction>> getAllTransactions() async {
+    final userId = _auth.currentUser!.uid;
     List<MyTransaction> list = [];
 
     //query to get all transactions.
-    final event = await ref.child("Transactions").once();
+    final event = await ref
+        .child("Transactions")
+        .orderByChild('userId')
+        .equalTo(userId)
+        .once();
 
     final snapshot = event.snapshot;
     if (snapshot.value != null) {

@@ -28,6 +28,7 @@ class IncomeExpenseColumn extends ConsumerWidget {
       }
     }
 
+    ref.watch(addTransactionProvider);
     return FutureBuilder<double>(
       future: (isIncome)
           ? MyFirebaseOperations().getIncome()

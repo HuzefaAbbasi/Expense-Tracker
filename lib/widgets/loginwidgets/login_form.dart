@@ -127,7 +127,7 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         children: [
           Container(
-              height: widget.screenHeight * 0.34,
+              height: widget.screenHeight * 0.35,
               width: widget.screenWidth,
               margin: EdgeInsets.all(widget.screenWidth * 0.07),
               padding: EdgeInsets.all(widget.screenWidth * 0.05),
@@ -137,8 +137,8 @@ class _LoginFormState extends State<LoginForm> {
                   children: [
                     //Name Field
                     nameField,
-                    const SizedBox(
-                      height: 15,
+                    SizedBox(
+                      height: widget.screenHeight * 0.02,
                     ),
                     //Email Field
                     passwordField,
