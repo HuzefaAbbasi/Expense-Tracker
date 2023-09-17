@@ -1,7 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:money_tracker/pages/add-transaction_page.dart';
+import 'package:money_tracker/pages/home_page.dart';
+import 'package:money_tracker/pages/login_page.dart';
+import 'package:money_tracker/pages/signup_page.dart';
+import 'package:money_tracker/pages/transactions_page.dart';
+import 'package:money_tracker/ui/on_boarding.dart';
+import 'package:money_tracker/ui/splash_screen.dart';
+import 'package:money_tracker/utils/routes.dart';
+import 'package:money_tracker/utils/themes.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -12,9 +25,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
+      theme: ThemeData().copyWith(
+        colorScheme: ThemeData().colorScheme.copyWith(
+              primary: MyThemes.greenColor,
+            ),
       ),
-      home: const MaterialApp(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      home: const SplashScreen(),
+      routes: {
+        MyRoutes.loginRoute: (context) => const Login(),
+        MyRoutes.onBoardingRoute: (context) => const OnBoarding(),
+        MyRoutes.signupRoute: (context) => const Signup(),
+        MyRoutes.homeRoute: (context) => const HomePage(),
+        MyRoutes.transactionsRoute: (context) => const Transactions(),
+        MyRoutes.addTransactionsRoute: (context) => const AddTransaction(),
+      },
     );
   }
 }
